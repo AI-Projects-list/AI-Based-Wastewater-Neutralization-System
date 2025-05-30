@@ -33,7 +33,7 @@ ai-neutralizer/
 ├── README.md
 └── requirements.txt
 
----
+```
 
 ## ⚙️ Tech Stack
 
