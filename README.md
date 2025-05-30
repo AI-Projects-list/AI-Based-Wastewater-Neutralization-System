@@ -58,7 +58,7 @@ Trained on historical chemical sensor readings labeled with:
 
 
 
----
+```
 
 ## 🔧 Backend (Flask) Suggestions
 
