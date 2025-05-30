@@ -1,76 +1,81 @@
-# 💧 AI Wastewater Neutralization System
+# 🌊 AI Wastewater Neutralization System
 
-This project uses AI to monitor and neutralize harmful chemicals in wastewater stored in small tanks. It reads water parameters using sensors, makes intelligent decisions to either neutralize or filter the water, and logs everything to a dashboard.
-
----
+This project monitors and neutralizes dangerous chemicals in small wastewater storage tanks using real-time sensors and an AI-based decision engine. Based on pH, TDS, and ORP readings, the system decides whether to neutralize the water with chemicals, filter it, or take no action.
 
 ## 🚀 Features
 
-- 🌡️ Real-time sensor monitoring (pH, TDS, ORP)
-- 🧠 AI model classifies water state: `safe`, `neutralize`, or `filter`
-- 🤖 Automated hardware control (chemical injection or filtration)
-- 🌐 Live dashboard (React frontend)
-- 🧪 Flask API backend with model inference
-- 📦 Easy-to-deploy structure
-
----
+- 📡 Real-time chemical sensor monitoring (pH, TDS, ORP)
+- 🧠 AI decision engine using scikit-learn (RandomForest)
+- 💧 Automatic control of chemical injection or filtering
+- 🌐 Web dashboard with live sensor data and action logs
+- 📦 Modular: ESP32 firmware, Flask backend, React frontend
 
 ## 🧱 Project Structure
+```plaintext
+ai-neutralizer/
+├── ai_model/ # AI model training and dataset
+│ ├── train_model.py
+│ └── sensor_data.csv
+│
+├── backend/ # Flask API backend
+│ ├── app.py
+│ └── model.pkl
+│
+├── frontend/ # React-based dashboard
+│ └── src/
+│ ├── App.js
+│ ├── index.js
+│ └── Dashboard.js
+│
+├── hardware/ # ESP32 firmware
+│ └── esp32_neutralizer.ino
+│
+├── README.md
+└── requirements.txt
 
-| Folder | Purpose |
-|--------|---------|
-| `ai_model/` | Model training scripts and dataset |
-| `backend/` | Flask API and AI model |
-| `frontend/` | React-based dashboard |
-| `hardware/` | ESP32 sensor code |
-| `README.md` | Project documentation |
+
+
+## ⚙️ Tech Stack
+
+- ESP32, pH/TDS/ORP sensors
+- Python, Flask, scikit-learn
+- React.js (Vite or Create React App)
+- PostgreSQL (or SQLite for local dev)
+
+## 🧪 AI Model Logic
+
+Trained on historical chemical sensor readings labeled with:
+- `neutralize`: Inject chemical to restore safe pH
+- `filter`: Open valve to filter contaminants
+- `safe`: No action
+
+## 🔌 Hardware Flow
+
+```text
+[Sensors] → [ESP32] → [Flask API] → [AI Decision] → [Control: Pump/Valve]
+                                       ↓
+                               [Log to Database]
+
+
 
 ---
 
-## 🧪 Sample Workflow
+## 🔧 Backend (Flask) Suggestions
 
-1. **Sensor Readings**: ESP32 reads pH, TDS, ORP from water tank
-2. **Send to API**: Sends data via HTTP POST to `/analyze`
-3. **AI Decision**: Flask backend predicts action:
-   - `safe`: No action
-   - `neutralize`: Activates chemical pump
-   - `filter`: Opens filtration valve
-4. **Dashboard**: Data and decision shown on website
+**Endpoints**
+- `POST /analyze` → takes pH, TDS, ORP → returns `action`
+- `GET /log` → returns historical logs in JSON
+- `GET /status` → health check
 
----
+**Features to Add**
+- SQLite/PostgreSQL connection instead of CSV
+- Basic authentication with API key
+- CORS enabled for frontend requests
 
-## 📦 Installation
-
-### Backend
-```bash
-cd backend
-pip install -r requirements.txt
-python app.py
-
-### Frontend
-```bash
-cd frontend
-npm install
-npm start
-
-📁 Suggested Project Structure
-```
-ai-wastewater-neutralizer/
-├── ai_model/
-│   ├── train_model.py           # Trains the AI model
-│   └── sensor_data.csv          # Example training dataset
-├── backend/
-│   ├── app.py                   # Flask API with AI decision engine
-│   └── model.pkl                # Trained AI model
-├── frontend/
-│   └── src/
-│       ├── App.js               # Main React component
-│       ├── Dashboard.js         # Dashboard UI component
-│       └── index.js             # Entry point for React app
-├── hardware/
-│   └── esp32_neutralizer.ino    # Microcontroller code for ESP32
-├── .gitignore                   # Files to ignore in Git
-├── README.md                    # Project documentation
-└── requirements.txt             # Python dependencies
-
-
+**requirements.txt**
+```txt
+Flask
+pandas
+scikit-learn
+joblib
+flask-cors
